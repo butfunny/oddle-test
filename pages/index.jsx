@@ -39,6 +39,9 @@ export default function Home() {
                                     Show more ({result.total_count - 10} {Plural.noun("result", result.total_count - 10)})
                                 </div>
                             )}
+                            onSelect={(item) => {
+                                console.log(item);
+                            }}
 
                         />
                     </div>

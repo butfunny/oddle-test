@@ -1,13 +1,14 @@
 import {LoadingIcon, SearchIcon} from "../icons";
 import "./auto-complete.styl"
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import debounce from "lodash/debounce"
 
-export function AutoComplete({api, displayAs, resultTitle = "Users", moreResults}) {
+export function AutoComplete({api, displayAs, resultTitle = "Users", moreResults, onSelect}) {
 
     const [value, setValue] = useState("");
     const [result, setResult] = useState({});
     const [loading, setLoading] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const fetchData = (query) => {
         if (query.length > 0) {
@@ -17,10 +18,10 @@ export function AutoComplete({api, displayAs, resultTitle = "Users", moreResults
                 setLoading(false);
             });
         }
-
     };
 
     const search = useCallback(debounce(query => fetchData(query), 800), []);
+
 
 
     return (
@@ -73,12 +74,10 @@ export function AutoComplete({api, displayAs, resultTitle = "Users", moreResults
 
                     <div className="results-wrapper">
                         {result.items.map((item, index) => (
-                            <div className="result-item" key={index}>
+                            <div className="result-item" key={index}
+                                 onClick={() => onSelect(item)}
+                            >
                                 {displayAs(item)}
-
-                                <div className="enter-text">
-                                    Select ↵
-                                </div>
                             </div>
                         ))}
                     </div>
